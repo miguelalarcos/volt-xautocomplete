@@ -10,7 +10,7 @@ module Xautocomplete
         p self.index_
       elsif e.key_code == 40
         self.index_ += 1
-      elsif e.key_code
+      elsif e.key_code == 13
         name = attrs.field #:value
         collection = attrs.collection # store._authors
         dct = {}

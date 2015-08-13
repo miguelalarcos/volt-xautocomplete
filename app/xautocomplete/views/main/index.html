@@ -1,7 +1,7 @@
 <:Body>
   <span class="autocomplete">
   <input type="text" e-keydown="down event" value="{{self.query}}" />    
-    {{if autocomplete.first.value != self.query}}
+    {{if autocomplete.first.value != self.query and self.query != ''}}
        <div class="autocomplete-popover">
        {{autocomplete.each_with_index do |val, i|}}
             <!--<div e-click="self.query=val" class="{{selected? i}}">{{view attrs.template, {val: val} }}</div>-->
