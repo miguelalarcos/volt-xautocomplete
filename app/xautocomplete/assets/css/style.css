@@ -1,0 +1,13 @@
+.autocomplete {
+    position: relative;
+}
+
+.autocomplete-popover {
+    position: absolute;
+    left: 0;
+    background-color: white;
+}
+
+.selected {
+    background-color: grey;
+}
