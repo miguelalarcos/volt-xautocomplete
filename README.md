@@ -18,7 +18,7 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+<:xautocomplete template='main/main/auto' collection="{{store._authors}}" field="surname" /> 
 
 ## Contributing
 
