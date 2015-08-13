@@ -18,7 +18,17 @@ Or install it yourself as:
 
 ## Usage
 
+```html
+<:xautocomplete collection="{{store._authors}}" field="surname" /> 
 <:xautocomplete template='main/main/auto' collection="{{store._authors}}" field="surname" /> 
+```
+
+file views/main/auto.html:
+
+```html
+<:Body>
+    <b>{{attrs.val}}</b>
+```
 
 ## Contributing
 

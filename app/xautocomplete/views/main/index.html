@@ -4,7 +4,11 @@
     {{if autocomplete.first.value != self.query and self.query != ''}}
        <div class="autocomplete-popover">
        {{autocomplete.each_with_index do |val, i|}}
-            <div e-click="self.query=val" class="{{selected? i}}">{{view attrs.template, {val: val} }}</div>
+           {{if attrs.template.nil?}}
+                <div e-click="self.query=val" class="{{selected? i}}">{{val}}</div>
+           {{else}}
+                <div e-click="self.query=val" class="{{selected? i}}">{{view attrs.template, {val: val} }}</div>
+            {{end}}
        {{end}}
        </div>
     {{end}}
