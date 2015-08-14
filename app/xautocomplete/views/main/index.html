@@ -1,13 +1,22 @@
 <:Body>
   <span class="autocomplete">
-  <input type="text" e-keydown="down event" value="{{self.query}}" />    
-    {{if autocomplete.first.value != self.query and self.query != ''}}
+  <input type="text" e-keydown="down event" value="{{ val_f }}" />    
+    <!--{{if autocomplete.first.value != self.query and self.query != ''}}-->
+       {{if show}}
        <div class="autocomplete-popover">
        {{autocomplete.each_with_index do |val, i|}}
            {{if attrs.template.nil?}}
-                <div e-click="self.query=val" class="{{selected? i}}">{{val}}</div>
+                {{if attrs.reference}}
+                  <div e-click="click_ val" class="{{selected? i}}">{{val.send('_'+attrs.field)}}</div>
+                {{else}}
+                  <div e-click="click_ val" class="{{selected? i}}">{{val}}</div>
+                {{end}}
            {{else}}
-                <div e-click="self.query=val" class="{{selected? i}}">{{view attrs.template, {val: val} }}</div>
+                {{if attrs.reference}} 
+                <div e-click="click_ val" class="{{selected? i}}">{{view attrs.template, {val: val.send('_'+attrs.field)} }}</div>
+                {{else}}
+                <div e-click="click_ val" class="{{selected? i}}">{{view attrs.template, {val: val} }}</div>
+                {{end}}
             {{end}}
        {{end}}
        </div>
