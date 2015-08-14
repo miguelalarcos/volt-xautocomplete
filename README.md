@@ -19,11 +19,12 @@ Or install it yourself as:
 ## Usage
 
 ```html
-<:xautocomplete collection="{{store._authors}}" field="surname" /> 
-<:xautocomplete template='main/main/auto' collection="{{store._authors}}" field="surname" /> 
+<:xautocomplete collection="{{store._authors}}" field="surname" value="{{page._surname}}" /> 
+<:xautocomplete template='main/main/auto' collection="{{store._authors}}" field="surname" value="{{page._surname}}"  /> 
+<:xautocomplete reference={{true}} collection="{{store._authors}}" field="surname" value="{{page._author}}" /> 
 ```
 
-file views/main/auto.html:
+for the template option we need the file views/main/auto.html:
 
 ```html
 <:Body>

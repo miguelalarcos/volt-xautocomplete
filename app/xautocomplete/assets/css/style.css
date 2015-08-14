@@ -9,5 +9,10 @@
 }
 
 .selected {
-    background-color: grey;
+    background-color: black;
+    color: white;
+}
+
+.item {
+    cursor: pointer;
 }

@@ -3,6 +3,7 @@ module Xautocomplete
 
     reactive_accessor :index_  
     reactive_accessor :query  
+    reactive_accessor :focus
 
     def val_f
       if self.query.blank? and attrs.value
@@ -35,8 +36,8 @@ module Xautocomplete
       end      
     end
 
-    def show      
-      if self.query.blank?
+    def show    
+      if self.query.blank? or not self.focus
         return false
       end
       if attrs.reference
