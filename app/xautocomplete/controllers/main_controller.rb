@@ -1,4 +1,12 @@
 module Xautocomplete
+  class Data
+    attr_reader :value, :caption
+    def initialize(value, caption)
+      @value = value
+      @caption = caption
+    end  
+  end
+
   class MainController < Volt::ModelController
 
     reactive_accessor :index_  
@@ -6,29 +14,24 @@ module Xautocomplete
     reactive_accessor :focus
 
     def val_f
-      if self.query.blank? and attrs.value
-        if attrs.reference
-          name = attrs.field       #
-          attrs.value.send('_'+name)   #
-        else
-          attrs.value
-        end
-      else
-        self.query
-      end
+      self.query
     end
 
     def val_f=(val)
       self.query = val
-      name = attrs.field #:value
-      collection = attrs.collection # store._authors
+      name = attrs.field 
+      collection = attrs.collection 
       dct = {}
       dct[name] = val
-      attrs.value = nil
-      collection.where(dct).first.then do |x|
+      order_ = {}
+      order_[name] = 1
+
+      #attrs.value = nil # gives me an error of method 'id' not found
+      
+      collection.where(dct).order(order_).first.then do |x|
         if not x.nil?
           if attrs.reference
-            attrs.value = x      #
+            attrs.value = x      
           else
             attrs.value = val 
           end  
@@ -40,25 +43,13 @@ module Xautocomplete
       if self.query.blank? or not self.focus
         return false
       end
-      if attrs.reference
-        if autocomplete.first.value and autocomplete.first.value.send('_'+attrs.field) != self.query
-          true
-        else
-          false
-        end
-      else
-        if autocomplete.first.value != self.query
-          true
-        else
-          false
-        end
-      end
+      autocomplete.first.value and autocomplete.first.value.caption != self.query
     end 
 
     def click_(val)
-      name = attrs.field
       if attrs.reference
-        self.query = val.send('_'+name)
+        name = attrs.field
+        self.query = val.send(name)
       else
         self.query = val
       end
@@ -68,32 +59,31 @@ module Xautocomplete
     def down e            
       if e.key_code == 38
         self.index_ -= 1
-        p self.index_
       elsif e.key_code == 40
         self.index_ += 1
       elsif e.key_code == 13
-        name = attrs.field #:value
-        collection = attrs.collection # store._authors
+        name = attrs.field 
+        collection = attrs.collection 
         dct = {}
         dct[name] = {"$regex" => '^.*' + self.query + '.*$'}
-        #ret = collection.where(dct).all.collect {|x| x.send('_'+name)}      
-        ret = collection.where(dct).all
-        ret.then do |r|
-        #collection.where(dct).all do |r|
+        order_ = {}
+        order_[name] = 1
+
+        collection.where(dct).order(order_).all.then do |r|
           count = r.count.value
-          self.query = r[self.index_ % count].send('_'+name).value
+          self.query = r[self.index_ % count].send(name).value
           if attrs.reference
             attrs.value = r[self.index_ % count].value
           else
-            attrs.value = r[self.index_ % count].send('_'+name).value
+            attrs.value = r[self.index_ % count].send(name).value
           end  
         end
       end  
     end
 
     def selected? i
-      name = attrs.field #:value
-      collection = attrs.collection #store._authors
+      name = attrs.field 
+      collection = attrs.collection 
       dct = {}
       dct[name] = {"$regex" => '^.*' + self.query + '.*$'}
       collection.where(dct).count.then do |c|
@@ -106,23 +96,25 @@ module Xautocomplete
     end
 
     def autocomplete
-      name = attrs.field #:value
-      collection = attrs.collection #store._authors
+      name = attrs.field 
+      collection = attrs.collection 
       dct = {}
       dct[name] = {"$regex" => '^.*' + self.query + '.*$'}
-      if attrs.reference
-        collection.where(dct).all
-      else
-        collection.where(dct).all.collect {|x| x.send('_'+name)}            
-      end
+      order_ = {}
+      order_[name] = 1
+      collection.where(dct).order(order_).all.collect {|x| Data.new(x, x.send(name) ) }
     end  
 
     def index
-      # Add code for when the index view is loaded
-      self.query = ''
-      self.index_ = 0
-      
+      attrs.value.then do |x|
+        if attrs.reference
+          name = attrs.field          
+          self.query = x.send(name)    
+        else
+          self.query = x
+        end
+      end
+      self.index_ = 0       
     end
-
   end
 end

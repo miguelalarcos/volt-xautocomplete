@@ -3,18 +3,18 @@
   <input type="text" e-focusout="not `$(event.js_event.relatedTarget).hasClass('item')` and self.focus=false" e-focusin="self.focus=true" e-keydown="down event" value="{{ val_f }}" />    
        {{if show}}
        <div class="autocomplete-popover">
-       {{autocomplete.each_with_index do |val, i|}}
+       {{autocomplete.each_with_index do |data, i|}}
            {{if attrs.template.nil?}}
                 {{if attrs.reference}}
-                  <div tabindex="100" e-click="click_ val" class="item {{selected? i}}">{{val.send('_'+attrs.field)}}</div>
+                  <div tabindex="100" e-click="self.query=data.caption; attrs.value=data.value" class="item {{selected? i}}">{{data.caption}}</div>
                 {{else}}
-                  <div tabindex="100" e-click="click_ val" class="item {{selected? i}}">{{val}}</div>
+                  <div tabindex="100" e-click="self.query=data.caption; attrs.value=data.caption" class="item {{selected? i}}">{{data.caption}}</div>
                 {{end}}
            {{else}}
                 {{if attrs.reference}} 
-                <div tabindex="100" e-click="click_ val" class="item {{selected? i}}">{{view attrs.template, {val: val.send('_'+attrs.field)} }}</div>
+                  <div tabindex="100" e-click="self.query=data.caption; attrs.value=data.value" class="item {{selected? i}}">{{view attrs.template, {val: data.caption} }}</div>
                 {{else}}
-                <div tabindex="100" e-click="click_ val" class="item {{selected? i}}">{{view attrs.template, {val: val} }}</div>
+                  <div tabindex="100" e-click="self.query=data.caption; attrs.value=data.caption" class="item {{selected? i}}">{{view attrs.template, {val: data.caption} }}</div>
                 {{end}}
             {{end}}
        {{end}}
