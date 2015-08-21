@@ -1,20 +1,20 @@
 <:Body>
-  <span class="autocomplete">
-  <input type="text" e-focusout="not `$(event.js_event.relatedTarget).hasClass('item')` and self.focus=false" e-focusin="self.focus=true" e-keydown="down event" value="{{ val_f }}" />    
+  <span class="xautocomplete">
+  <input type="text" e-focusout="not `$(event.js_event.relatedTarget).hasClass('xitem')` and self.focus=false" e-focusin="self.focus=true" e-keydown="down event" value="{{ val_f }}" />    
        {{if show}}
-       <div class="autocomplete-popover">
+       <div class="xautocomplete-popover">
        {{autocomplete.each_with_index do |data, i|}}
            {{if attrs.template.nil?}}
                 {{if attrs.reference}}
-                  <div tabindex="100" e-click="self.query=data.caption; attrs.value=data.value" class="item {{selected? i}}">{{data.caption}}</div>
+                  <div tabindex="100" e-click="self.query=data.text; attrs.value=data.obj" class="xitem {{selected? i}}">{{data.text}}</div>
                 {{else}}
-                  <div tabindex="100" e-click="self.query=data.caption; attrs.value=data.caption" class="item {{selected? i}}">{{data.caption}}</div>
+                  <div tabindex="100" e-click="self.query=data.text; attrs.value=data.text" class="xitem {{selected? i}}">{{data.text}}</div>
                 {{end}}
            {{else}}
                 {{if attrs.reference}} 
-                  <div tabindex="100" e-click="self.query=data.caption; attrs.value=data.value" class="item {{selected? i}}">{{view attrs.template, {val: data.caption} }}</div>
+                  <div tabindex="100" e-click="self.query=data.text; attrs.value=data.obj" class="xitem {{selected? i}}">{{view attrs.template, {data: data} }}</div>
                 {{else}}
-                  <div tabindex="100" e-click="self.query=data.caption; attrs.value=data.caption" class="item {{selected? i}}">{{view attrs.template, {val: data.caption} }}</div>
+                  <div tabindex="100" e-click="self.query=data.text; attrs.value=data.text" class="xitem {{selected? i}}">{{view attrs.template, {data: data} }}</div>
                 {{end}}
             {{end}}
        {{end}}

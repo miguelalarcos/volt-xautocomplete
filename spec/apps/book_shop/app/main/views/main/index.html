@@ -5,6 +5,7 @@
   <h1>{{title}}</h1>
   <span class="first">
       <:xautocomplete reference={{true}} collection="{{store._authors}}" field="surname" value="{{author}}" /> 
+      {{author.surname}}
   </span>
   <span class="second">
       <:xautocomplete collection="{{store._authors}}" field="surname" value="{{coauthor}}" /> 

@@ -1,9 +1,9 @@
 module Xautocomplete
   class Data
-    attr_reader :value, :caption
-    def initialize(value, caption)
-      @value = value
-      @caption = caption
+    attr_reader :obj, :text
+    def initialize(obj, text)
+      @obj = obj
+      @text = text
     end  
   end
 
@@ -43,18 +43,8 @@ module Xautocomplete
       if self.query.blank? or not self.focus
         return false
       end
-      autocomplete.first.value and autocomplete.first.value.caption != self.query
+      autocomplete.first.value and autocomplete.first.value.text != self.query
     end 
-
-    def click_(val)
-      if attrs.reference
-        name = attrs.field
-        self.query = val.send(name)
-      else
-        self.query = val
-      end
-      attrs.value = val
-    end
 
     def down e            
       if e.key_code == 38
@@ -88,7 +78,7 @@ module Xautocomplete
       dct[name] = {"$regex" => '^.*' + self.query + '.*$'}
       collection.where(dct).count.then do |c|
         if self.index_ % c == i
-          'selected'
+          'xselected'
         else
           ''
         end

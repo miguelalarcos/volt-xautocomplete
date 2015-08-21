@@ -1,19 +1,19 @@
-.autocomplete {
+.xautocomplete {
     position: relative;
 }
 
-.autocomplete-popover {
+.xautocomplete-popover {
     position: absolute;
     left: 0;
     z-index: 100;
     background-color: white;
 }
 
-.selected {
+.xselected {
     background-color: black;
     color: white;
 }
 
-.item {
+.xitem {
     cursor: pointer;
 }
