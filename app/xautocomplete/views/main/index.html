@@ -5,17 +5,9 @@
        <div class="xautocomplete-popover">
        {{autocomplete.each_with_index do |data, i|}}
            {{if attrs.template.nil?}}
-                {{if attrs.reference}}
-                  <div tabindex="100" e-click="self.query=data.text; attrs.value=data.obj" class="xitem {{selected? i}}">{{data.text}}</div>
-                {{else}}
-                  <div tabindex="100" e-click="self.query=data.text; attrs.value=data.text" class="xitem {{selected? i}}">{{data.text}}</div>
-                {{end}}
+               <div tabindex="100" e-click="click_item data" class="xitem {{selected? i}}">{{data.text}}</div>
            {{else}}
-                {{if attrs.reference}} 
-                  <div tabindex="100" e-click="self.query=data.text; attrs.value=data.obj" class="xitem {{selected? i}}">{{view attrs.template, {data: data} }}</div>
-                {{else}}
-                  <div tabindex="100" e-click="self.query=data.text; attrs.value=data.text" class="xitem {{selected? i}}">{{view attrs.template, {data: data} }}</div>
-                {{end}}
+               <div tabindex="100" e-click="click_item data" class="xitem {{selected? i}}">{{view attrs.template, {data: data} }}</div>
             {{end}}
        {{end}}
        </div>

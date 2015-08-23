@@ -3,18 +3,6 @@ module Main
   class MainController < Volt::ModelController
     def index
       # Add code for when the index view is loaded
-      
-      #store._books.destroy_all
-      #store._authors.destroy_all
-      #p 'before'
-      #p store._books.reverse.each(&:destroy)
-      #p 'middle'
-      #p store._authors.reverse.each(&:destroy)
-      #p 'after'
-
-      #store._authors.count.then do |c|
-      #  p c
-      #end
 
       #['Dennet', 'Dawkins', 'Darwin'].each do |surname|
       #    store._authors << Author.new({:surname => surname})

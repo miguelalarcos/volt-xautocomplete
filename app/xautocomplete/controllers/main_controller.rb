@@ -46,6 +46,15 @@ module Xautocomplete
       autocomplete.first.value and autocomplete.first.value.text != self.query
     end 
 
+    def click_item data
+      self.query=data.text
+      if attrs.reference
+        attrs.value=data.obj
+      else
+        attrs.value=data.text
+      end
+    end
+
     def down e            
       if e.key_code == 38
         self.index_ -= 1
