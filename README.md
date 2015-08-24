@@ -28,7 +28,7 @@ for the template option we need the file views/main/auto.html:
 
 ```html
 <:Body>
-    <b>{{attrs.data.text}}</b>
+    <b>{{attrs.text}}</b>
 ```
 
 ## Contributing

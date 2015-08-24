@@ -1,14 +1,5 @@
 module Xautocomplete
-  class Data
-    attr_reader :obj, :text
-    def initialize(obj, text)
-      @obj = obj
-      @text = text
-    end  
-  end
-
   class MainController < Volt::ModelController
-
     reactive_accessor :index_  
     reactive_accessor :query  
     reactive_accessor :focus
@@ -19,39 +10,33 @@ module Xautocomplete
 
     def val_f=(val)
       self.query = val
-      name = attrs.field 
-      collection = attrs.collection 
-      dct = {}
-      dct[name] = val
-      order_ = {}
-      order_[name] = 1
-
-      #attrs.value = nil # gives me an error of method 'id' not found
-      
-      collection.where(dct).order(order_).first.then do |x|
+      autocomplete.first.then do |x|
         if not x.nil?
           if attrs.reference
-            attrs.value = x      
+            if x.send(attrs.field) == val
+              attrs.value = x
+            end
           else
-            attrs.value = val 
-          end  
+            attrs.value = val
+          end
         end
-      end      
+      end
     end
 
     def show    
       if self.query.blank? or not self.focus
         return false
       end
-      autocomplete.first.value and autocomplete.first.value.text != self.query
+      autocomplete.first.value and autocomplete.first.send(attrs.field).value != self.query
     end 
 
-    def click_item data
-      self.query=data.text
+    def click_item item
+      text = item.send(attrs.field)
+      self.query = text
       if attrs.reference
-        attrs.value=data.obj
+        attrs.value=item
       else
-        attrs.value=data.text
+        attrs.value=text
       end
     end
 
@@ -61,14 +46,8 @@ module Xautocomplete
       elsif e.key_code == 40
         self.index_ += 1
       elsif e.key_code == 13
-        name = attrs.field 
-        collection = attrs.collection 
-        dct = {}
-        dct[name] = {"$regex" => '^.*' + self.query + '.*$'}
-        order_ = {}
-        order_[name] = 1
-
-        collection.where(dct).order(order_).all.then do |r|
+        name = attrs.field
+        autocomplete.then do |r|
           count = r.count.value
           self.query = r[self.index_ % count].send(name).value
           if attrs.reference
@@ -81,11 +60,7 @@ module Xautocomplete
     end
 
     def selected? i
-      name = attrs.field 
-      collection = attrs.collection 
-      dct = {}
-      dct[name] = {"$regex" => '^.*' + self.query + '.*$'}
-      collection.where(dct).count.then do |c|
+      autocomplete.count.then do |c|
         if self.index_ % c == i
           'xselected'
         else
@@ -101,7 +76,7 @@ module Xautocomplete
       dct[name] = {"$regex" => '^.*' + self.query + '.*$'}
       order_ = {}
       order_[name] = 1
-      collection.where(dct).order(order_).all.collect {|x| Data.new(x, x.send(name) ) }
+      collection.where(dct).order(order_).all
     end  
 
     def index
